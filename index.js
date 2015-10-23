@@ -50,8 +50,10 @@ function s3syncer(db, options) {
   function syncFile(details, next) {
     var absolute = details.fullPath
       , relative = prefix + (details.path.charAt(0) === '/'
-        ? details.path.slice(1)
-        : details.path)
+                ? details.path.slice(1)
+                : details.path)
+
+    relative = relative.replace(/\\/g,'/')
 
     var destination =
           protocol + '://'
@@ -104,6 +106,8 @@ function s3syncer(db, options) {
       , off = backoff.fibonacci({
         initialDelay: 1000
       })
+
+    relative = relative.replace(/\\/g,'/')
 
     details.fresh = true
 
